@@ -111,8 +111,9 @@ module ChangeHealth
 
                 claim_adjustments = adjustments(payment_info['claimAdjustments'])
 
-                service_date_begin = nil
-                service_date_end = nil
+                service_date_begin = ChangeHealth::Models::PARSE_DATE.call(payment_info['claimStatementPeriodStart'])
+                service_date_end = ChangeHealth::Models::PARSE_DATE.call(payment_info['claimStatementPeriodEnd'])
+
                 service_lines = payment_info['serviceLines']&.map do |service_line|
                   service_line_date = ChangeHealth::Models::PARSE_DATE.call(service_line['serviceDate'])
                   unless service_line_date.nil?
@@ -158,10 +159,7 @@ module ChangeHealth
                   service_line
                 end
 
-                if service_date_begin.nil? && service_date_end.nil?
-                  service_date_begin = ChangeHealth::Models::PARSE_DATE.call(payment_info['claimStatementPeriodStart'])
-                  service_date_end = ChangeHealth::Models::PARSE_DATE.call(payment_info['claimStatementPeriodEnd'])
-                end
+
 
                 Report835Claim.new(
                   claim_adjustments: claim_adjustments,
