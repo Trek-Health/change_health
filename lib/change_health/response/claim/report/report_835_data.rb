@@ -168,6 +168,8 @@ module ChangeHealth
                   service_date_end = ChangeHealth::Models::PARSE_DATE.call(payment_info['claimStatementPeriodEnd'])
                 end
 
+                insureds_changed_unique_identification_number = payment_info.dig('correctedPatientOrInsuredName', 'insuredsChangedUniqueIdentificationNumber')
+
                 Report835Claim.new(
                   claim_adjustments: claim_adjustments,
                   raw_claim_adjustments: raw_claim_adjustments,
@@ -202,7 +204,8 @@ module ChangeHealth
                   payer_state: payer_state,
                   payment_method_code: payment_method_code,
                   claim_received_date: claim_received_date,
-                  claim_frequency_code: claim_frequency_code
+                  claim_frequency_code: claim_frequency_code,
+                  insureds_changed_unique_identification_number: insureds_changed_unique_identification_number
                 )
               end
             end
